@@ -469,70 +469,9 @@ public class RoomManager implements Listener {
                     return;
                 }
                 GameRoom room = playerInfo.getGameRoom();
-                if (room.getType() == GameRoom.GameType.WAIT) {
-                    event.setCancelled();
-                    return;
-                }
-
-                /////////////
-                //会重复
-                if (playerInfo.getPlayerType() == PlayerInfo.PlayerType.WAIT) {
-                    event.setCancelled();
-                    return;
-                }
-
-                //TODO 弓箭击中玩家
-                if (event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
-                    if (event instanceof EntityDamageByEntityEvent) {
-                        Entity damagers = (((EntityDamageByEntityEvent) event).getDamager());
-                        if (damagers instanceof Player) {
-                            PlayerInfo playerInfo1 = TotalManager.getRoomManager().getPlayerInfo((Player) damagers);
-                            if (playerInfo1 != null) {
-                                playerInfo1.addSound(Sound.RANDOM_ORB);
-                                double h = event.getEntity().getHealth() - event.getFinalDamage();
-                                if (h < 0) {
-                                    h = 0;
-                                }
-                                playerInfo1.sendTip("&e目标: &c❤" + String.format("%.1f", h));
-                            }
-
-                        }
+                event.setCancelled();
 
 
-                    }
-                }
-                if (event instanceof EntityDamageByEntityEvent) {
-                    //TODO 免受TNT爆炸伤害
-                    Entity entity = ((EntityDamageByEntityEvent) event).getDamager();
-                    if (entity instanceof EntityPrimedTNT) {
-                        event.setDamage(2);
-                    }
-
-                    if (entity instanceof Player) {
-                        PlayerInfo damageInfo = room.getPlayerInfo((Player) entity);
-                        if (damageInfo != null) {
-                            if (damageInfo.isWatch()) {
-                                event.setCancelled();
-                                return;
-                            }
-                            ///////////////// 阻止队伍PVP///////////////
-                            //TODO 阻止队伍PVP
-                            TeamInfo t1 = playerInfo.getTeamInfo();
-                            TeamInfo t2 = damageInfo.getTeamInfo();
-                            if (t1 != null && t2 != null) {
-                                if (t1.getTeamConfig().getName().equalsIgnoreCase(t2.getTeamConfig().getName())) {
-                                    event.setCancelled();
-                                    return;
-                                }
-                            }
-                            ///////////////// 阻止队伍PVP///////////////
-                            playerInfo.setDamageByInfo(damageInfo);
-                        } else {
-                            event.setCancelled();
-                        }
-                    }
-
-                }
                 if (event.getCause() == EntityDamageEvent.DamageCause.VOID) {
                     event.setCancelled();
                     playerInfo.death(event);
