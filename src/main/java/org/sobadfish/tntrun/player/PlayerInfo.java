@@ -636,8 +636,11 @@ public class PlayerInfo {
 
         if(gameRoom.getType() == GameRoom.GameType.START){
             if(waitTime > 0){
+                player.setImmobile(true);
+
                 waitTime--;
                 if(waitTime <= 0){
+                    player.setImmobile(false);
                     //TODO 正式开始
                     sendTitle("&c开始!",2);
                     sendSubTitle("注意脚下安全");
@@ -649,6 +652,7 @@ public class PlayerInfo {
             }
         }
         if(isStart) {
+            updateTime++;
             if(isLive()) {
                 if (getPlayer().isInsideOfWater()) {
                     death(null);

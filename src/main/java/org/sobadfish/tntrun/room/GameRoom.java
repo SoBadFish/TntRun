@@ -629,24 +629,8 @@ public class GameRoom {
             }
         }else{
 
-            double y = 0;
-            PlayerInfo successPlayerInfo = null;
             TeamInfo teamInfo = getTeamInfos().get(0);
-            for(PlayerInfo info: teamInfo.getLivePlayer()){
-                if(info.player.getY() > y){
-                    successPlayerInfo = info;
-                    y = info.player.getY();
-                }
-            }
-            if(successPlayerInfo == null){
-                successPlayerInfo = teamInfo.getLivePlayer().get(0);
-            }
-            teamInfo.getVictoryPlayers().add(successPlayerInfo);
-            for(PlayerInfo info: teamInfo.getLivePlayer()){
-                if(!info.equals(successPlayerInfo)){
-                    teamInfo.getDefeatPlayers().add(info);
-                }
-            }
+            teamInfo.getVictoryPlayers().addAll(teamInfo.getLivePlayer());
             gameEnd(teamInfo,false);
 
 

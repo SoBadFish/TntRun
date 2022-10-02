@@ -857,14 +857,16 @@ public class RoomManager implements Listener {
         event.getRoom().sendTipMessage("&a"+line);
         event.getRoom().sendTipMessage(FunctionManager.getCentontString("&b游戏结束",line.length()));
         event.getRoom().sendTipMessage("");
+        StringBuilder players = new StringBuilder();
         for(PlayerInfo playerInfo: event.getTeamInfo().getVictoryPlayers()){
-            event.getRoom().sendTipMessage(FunctionManager.getCentontString("&7   "+playerInfo.getPlayer().getName()+" 击杀："+(playerInfo.getKillCount())+" 助攻: "+playerInfo.getAssists(),line.length()));
+            players.append(playerInfo.getName()).append(",");
+            event.getRoom().sendTipMessage(FunctionManager.getCentontString("&7   "+playerInfo.getPlayer().getName()+" 时长: "+PlayerInfo.formatTime1(playerInfo.updateTime),line.length()));
             event.getRoom().getRoomConfig().victoryCommand.forEach(cmd->Server.getInstance().dispatchCommand(new ConsoleCommandSender(),cmd.replace("@p",playerInfo.getName())));
         }
         event.getRoom().sendTipMessage("&a"+line);
 
 
-        event.getRoom().sendMessage("&a恭喜 "+event.getTeamInfo().getTeamConfig().getNameColor()+event.getTeamInfo().getTeamConfig().getName()+" &a 获得了胜利!");
+        event.getRoom().sendMessage("&a恭喜 "+players.substring(0,players.length()-1)+" 获得了胜利!");
 
     }
 
@@ -983,7 +985,7 @@ public class RoomManager implements Listener {
                             if(info.isDeath()){
                                 room.sendMessageOnDeath(info+"&7(死亡) &r>> "+msg);
                             }else {
-                                teamInfo.sendMessage(teamInfo.getTeamConfig().getNameColor() + "[队伍]&7 " + info.getPlayer().getName() + " &f>>&r " + msg);
+                                teamInfo.sendMessage(teamInfo.getTeamConfig().getNameColor() + info.getPlayer().getName() + " &f>>&r " + msg);
                             }
                         }else{
                             room.sendMessage(info+" &f>>&r "+msg);
