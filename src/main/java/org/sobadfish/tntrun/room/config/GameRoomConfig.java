@@ -131,19 +131,6 @@ public class GameRoomConfig {
      * */
     public ArrayList<String> banBreak = new ArrayList<>();
 
-    /**
-     * 箱子物品
-     * */
-    public Map<String,ItemConfig> items = new LinkedHashMap<>();
-    /**
-     * 刷新箱子物品概率
-     * */
-    private int round = 15;
-    /**
-     * 箱子物品
-     * */
-    public boolean roundChest = false;
-
 
 
 
@@ -191,9 +178,6 @@ public class GameRoomConfig {
         return maxPlayerSize;
     }
 
-    public int getRound() {
-        return round;
-    }
 
     public void setWorldInfo(WorldInfoConfig worldInfo) {
         this.worldInfo = worldInfo;
@@ -256,24 +240,6 @@ public class GameRoomConfig {
                 roomConfig.deathDrop = room.getBoolean("deathDrop",false);
                 roomConfig.canBreak = new ArrayList<>(room.getStringList("can-break"));
                 roomConfig.banBreak = new ArrayList<>(room.getStringList("ban-break"));
-                roomConfig.roundChest = room.getBoolean("roundChest",false);
-
-                if(roomConfig.roundChest) {
-                    //TODO 如果小游戏需要使用箱子内随机刷新物品 就解开这个配置
-                    //////////////////////////////////////////////////////////
-                    if (!new File(file + "/items.yml").exists()) {
-                        TotalManager.saveResource("items.yml", "/rooms/" + name + "/items.yml", false);
-                    }
-
-                    Config item = new Config(file + "/items.yml", Config.YAML);
-                    List<Map> strings = item.getMapList("chests");
-                    Map<String, ItemConfig> buildItem = FunctionManager.buildItem(strings);
-                    roomConfig.items = buildItem;
-                    roomConfig.round = room.getInt("round", 15);
-                }
-
-                ////////////////////////////////////////////////////////////////
-
 
                 List<FloatTextInfoConfig> configs = new ArrayList<>();
                 if(room.exists("floatSpawnPos")){
@@ -361,7 +327,7 @@ public class GameRoomConfig {
         config.set("defeatCmd",defeatCommand);
         config.set("deathDrop",deathDrop);
         config.set("victoryCmd",victoryCommand);
-        config.set("roundChest",roundChest);
+//        config.set("roundChest",roundChest);
         config.set("roomStartMessage",gameStartMessage);
         List<Map<String,Object>> pos = new ArrayList<>();
         for(FloatTextInfoConfig floatTextInfoConfig: floatTextInfoConfigs){

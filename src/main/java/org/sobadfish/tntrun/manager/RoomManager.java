@@ -52,7 +52,6 @@ import org.sobadfish.tntrun.player.team.TeamInfo;
 import org.sobadfish.tntrun.room.GameRoom;
 import org.sobadfish.tntrun.room.GameRoom.GameType;
 import org.sobadfish.tntrun.room.config.GameRoomConfig;
-import org.sobadfish.tntrun.room.config.ItemConfig;
 import org.sobadfish.tntrun.tools.Utils;
 
 import java.io.File;
@@ -607,24 +606,6 @@ public class RoomManager implements Listener {
                         event.setCancelled();
                         choseteamItem(player, room);
 
-                    }
-                    Block block = event.getBlock();
-
-                    if(room.roomConfig.items.size() > 0 && room.roomConfig.roundChest) {
-                        if (room.getType() == GameType.START) {
-                            ItemConfig config = room.getRandomItemConfig(block);
-                            if (config != null) {
-                                BlockEntity entityChest = block.level.getBlockEntity(block);
-                                if (entityChest instanceof InventoryHolder && entityChest instanceof BlockEntityNameable) {
-                                    LinkedHashMap<Integer, Item> items = room.getRandomItem(((InventoryHolder) entityChest)
-                                            .getInventory().getSize(), block);
-                                    if (items.size() > 0) {
-                                        ((InventoryHolder) entityChest).getInventory().setContents(items);
-                                    }
-                                }
-
-                            }
-                        }
                     }
                 }
             }

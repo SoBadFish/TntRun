@@ -26,7 +26,7 @@ import org.sobadfish.tntrun.player.PlayerInfo;
 import org.sobadfish.tntrun.player.team.TeamInfo;
 import org.sobadfish.tntrun.player.team.config.TeamInfoConfig;
 import org.sobadfish.tntrun.room.config.GameRoomConfig;
-import org.sobadfish.tntrun.room.config.ItemConfig;
+
 import org.sobadfish.tntrun.room.floattext.FloatTextInfo;
 import org.sobadfish.tntrun.room.floattext.FloatTextInfoConfig;
 import org.sobadfish.tntrun.room.world.WorldInfo;
@@ -103,12 +103,7 @@ public class GameRoom {
         return roomConfig;
     }
 
-    public ItemConfig getRandomItemConfig(Block block){
-        if(roomConfig.items.containsKey(block.getId()+"")){
-            return roomConfig.items.get(block.getId()+"");
-        }
-        return null;
-    }
+
 
 
     public GameType getType() {
@@ -801,37 +796,6 @@ public class GameRoom {
         }
 
     }
-
-    /**
-     * 设置资源箱的物品
-     * */
-    public LinkedHashMap<Integer, Item> getRandomItem(int size, Block block){
-        LinkedHashMap<Integer,Item> itemLinkedHashMap = new LinkedHashMap<>();
-        if(worldInfo == null){
-            return itemLinkedHashMap;
-        }
-        if(!worldInfo.clickChest.contains(block)){
-            List<Item> list = getRoundItems(block);
-            if(list.size() > 0) {
-                for (int i = 0; i < size; i++) {
-                    if (Utils.rand(0, 100) <= getRoomConfig().getRound()) {
-                        itemLinkedHashMap.put(i, list.get(new Random().nextInt(list.size())));
-                    }
-                }
-                worldInfo.clickChest.add(block);
-            }
-        }
-        return itemLinkedHashMap;
-
-    }
-
-    public List<Item> getRoundItems(Block block){
-        if(roomConfig.items.containsKey(block.getId()+"")){
-            return roomConfig.items.get(block.getId()+"").items;
-        }
-        return new ArrayList<>();
-    }
-
 
 
 }
