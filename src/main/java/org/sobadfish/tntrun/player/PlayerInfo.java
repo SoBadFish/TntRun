@@ -652,6 +652,9 @@ public class PlayerInfo {
         if(isStart){
             //TODO 清除方块
             getPlayer().getLevel().setBlock(getPlayer(),new BlockAir(),true);
+            if(getPlayer().isInsideOfWater()){
+                death(null);
+            }
         }
         //助攻间隔
         LinkedHashMap<PlayerInfo,Long> ass = new LinkedHashMap<>(assistsPlayers);
