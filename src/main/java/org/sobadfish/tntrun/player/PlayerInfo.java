@@ -524,7 +524,6 @@ public class PlayerInfo {
         String teamName = "&r";
         String playerName = "&7"+player.getName();
         if(teamInfo != null && !isWatch()){
-            teamName = "&7[&r"+teamInfo.getTeamConfig().getNameColor()+teamInfo.getTeamConfig().getName()+"&7]&r";
             playerName = teamInfo.getTeamConfig().getNameColor()+" &7"+player.getName();
         }else if(isWatch()){
             teamName = "&7[旁观] ";
@@ -640,7 +639,7 @@ public class PlayerInfo {
                 waitTime--;
                 if(waitTime <= 0){
                     //TODO 正式开始
-                    sendTitle("开始!",2);
+                    sendTitle("&c开始!",2);
                     sendSubTitle("注意脚下安全");
                     isStart = true;
                 }else{
@@ -649,16 +648,7 @@ public class PlayerInfo {
                 }
             }
         }
-        if(isStart){
-            //TODO 清除方块
-            if(getPlayer().isOnGround()) {
-                getPlayer().getLevel().setBlock(getPlayer(), new BlockAir(), true);
-                getPlayer().getLevel().setBlock(getPlayer().add(0, -1, 0), new BlockAir(), true);
-            }
-            if(getPlayer().isInsideOfWater()){
-                death(null);
-            }
-        }
+
         //助攻间隔
         LinkedHashMap<PlayerInfo,Long> ass = new LinkedHashMap<>(assistsPlayers);
         for(Map.Entry<PlayerInfo,Long> entry: ass.entrySet()){

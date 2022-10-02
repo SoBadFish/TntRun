@@ -1,11 +1,10 @@
 package org.sobadfish.tntrun.manager;
 
 
+import cn.nukkit.Server;
+import org.sobadfish.tntrun.TntRunMain;
 import org.sobadfish.tntrun.room.GameRoom;
-import org.sobadfish.tntrun.thread.PluginMasterRunnable;
-import org.sobadfish.tntrun.thread.RandomJoinRunnable;
-import org.sobadfish.tntrun.thread.RoomLoadRunnable;
-import org.sobadfish.tntrun.thread.TopRunnable;
+import org.sobadfish.tntrun.thread.*;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -118,6 +117,10 @@ public class ThreadManager {
         ThreadManager.schedule(new RoomLoadRunnable());
         ThreadManager.schedule(new TopRunnable());
         ThreadManager.schedule(new RandomJoinRunnable());
+        //这个要速度快
+        Server.getInstance().getScheduler().scheduleRepeatingTask(TotalManager.getPlugin()
+        ,new ChunkGroundRunnable((TntRunMain) TotalManager.getPlugin()),8);
+
 
     }
 
