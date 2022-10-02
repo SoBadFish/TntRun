@@ -648,6 +648,13 @@ public class PlayerInfo {
                 }
             }
         }
+        if(isStart) {
+            if(isLive()) {
+                if (getPlayer().isInsideOfWater()) {
+                    death(null);
+                }
+            }
+        }
 
         //助攻间隔
         LinkedHashMap<PlayerInfo,Long> ass = new LinkedHashMap<>(assistsPlayers);

@@ -26,9 +26,7 @@ public class ChunkGroundRunnable extends PluginTask<TntRunMain> {
                         info.getPlayer().getLevel().setBlock(info.getPlayer().getLevelBlock(), new BlockAir(), true);
                         info.getPlayer().getLevel().setBlock(info.getPlayer().getLevelBlock().add(0, -1, 0), new BlockAir(), true);
                     }
-                    if(info.getPlayer().isInsideOfWater()){
-                        info.death(null);
-                    }
+
                 }
             }
         }
