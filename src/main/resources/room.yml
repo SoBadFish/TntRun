@@ -1,0 +1,31 @@
+world: ""
+gameTime: 1200
+callbackY: 17
+deathDrop: true
+hasWatch: true
+waitTime: 120
+max-player-waitTime: 20
+minPlayerSize: 4
+maxPlayerSize: 16
+teamSpawn: {}
+waitPosition: ""
+ban-command: []
+QuitRoom: []
+AutomaticNextRound: true
+victoryCmd: []
+defeatCmd: []
+roundChest: false
+# 禁止破坏的方块
+ban-break: []
+can-break: []
+floatSpawnPos: []
+
+roomStartMessage:
+  - "&a■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■"
+  - "&fTNT Run"
+  - "&e"
+  - "&eTNT跑酷"
+  - "&e"
+  - "&a■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■"
+
+
