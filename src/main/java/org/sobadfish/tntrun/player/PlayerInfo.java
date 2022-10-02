@@ -651,7 +651,10 @@ public class PlayerInfo {
         }
         if(isStart){
             //TODO 清除方块
-            getPlayer().getLevel().setBlock(getPlayer(),new BlockAir(),true);
+            if(getPlayer().isOnGround()) {
+                getPlayer().getLevel().setBlock(getPlayer(), new BlockAir(), true);
+                getPlayer().getLevel().setBlock(getPlayer().add(0, -1, 0), new BlockAir(), true);
+            }
             if(getPlayer().isInsideOfWater()){
                 death(null);
             }

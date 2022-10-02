@@ -468,7 +468,6 @@ public class RoomManager implements Listener {
                     event.setCancelled();
                     return;
                 }
-                GameRoom room = playerInfo.getGameRoom();
                 event.setCancelled();
 
 
