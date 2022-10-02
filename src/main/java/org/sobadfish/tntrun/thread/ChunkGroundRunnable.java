@@ -20,19 +20,21 @@ public class ChunkGroundRunnable extends PluginTask<TntRunMain> {
     @Override
     public void onRun(int i) {
         for(GameRoom room: TotalManager.getRoomManager().getRooms().values()){
-            for(PlayerInfo info: room.getLivePlayers()){
-                if(info.isStart){
-                    //TODO 清除方块
-                    if(info.getPlayer().isOnGround()) {
-                        double x = info.getPlayer().getX();
-                        double y = info.getPlayer().getFloorY();
-                        double z = info.getPlayer().getZ();
-                        info.getPlayer().getLevel().setBlock(new Vector3(Math.ceil(x),y,Math.ceil(z)),new BlockAir());
-                        info.getPlayer().getLevel().setBlock(new Vector3(x,y,z),new BlockAir());
-                        info.getPlayer().getLevel().setBlock(new Vector3(Math.ceil(x),y - 1,Math.ceil(z)),new BlockAir());
-                        info.getPlayer().getLevel().setBlock(new Vector3(x,y - 1,z),new BlockAir());
-                    }
+            if(room.getType() == GameRoom.GameType.START) {
+                for (PlayerInfo info : room.getLivePlayers()) {
+                    if (info.isStart) {
+                        //TODO 清除方块
+                        if (info.getPlayer().isOnGround()) {
+                            double x = info.getPlayer().getX();
+                            double y = info.getPlayer().getFloorY();
+                            double z = info.getPlayer().getZ();
+                            info.getPlayer().getLevel().setBlock(new Vector3(Math.ceil(x), y, Math.ceil(z)), new BlockAir());
+                            info.getPlayer().getLevel().setBlock(new Vector3(x, y, z), new BlockAir());
+                            info.getPlayer().getLevel().setBlock(new Vector3(Math.ceil(x), y - 2, Math.ceil(z)), new BlockAir());
+                            info.getPlayer().getLevel().setBlock(new Vector3(x, y - 2, z), new BlockAir());
+                        }
 
+                    }
                 }
             }
         }

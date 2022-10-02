@@ -757,6 +757,7 @@ public class PlayerInfo {
         PlayerGameDeathEvent event1 = new PlayerGameDeathEvent(this,getGameRoom(),TotalManager.getPlugin());
         Server.getInstance().getPluginManager().callEvent(event1);
 
+        gameRoom.addSound(Sound.RANDOM_SCREENSHOT);
 
         player.removeAllEffects();
         if(getGameRoom().getWorldInfo().getConfig().getGameWorld() == null){
