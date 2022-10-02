@@ -399,7 +399,7 @@ public class PlayerInfo {
             isSendkey = false;
         }
         if (player instanceof Player) {
-            ((Player) player).setFoodEnabled(true);
+            ((Player) player).setFoodEnabled(false);
             ((Player) player).getFoodData().reset();
 
             if (!((Player) player).isOnline()) {
