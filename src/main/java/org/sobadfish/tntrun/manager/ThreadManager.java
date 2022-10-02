@@ -119,7 +119,7 @@ public class ThreadManager {
         ThreadManager.schedule(new RandomJoinRunnable());
         //这个要速度快
         Server.getInstance().getScheduler().scheduleRepeatingTask(TotalManager.getPlugin()
-        ,new ChunkGroundRunnable((TntRunMain) TotalManager.getPlugin()),8);
+        ,new ChunkGroundRunnable((TntRunMain) TotalManager.getPlugin()),2);
 
 
     }

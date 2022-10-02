@@ -1,6 +1,7 @@
 package org.sobadfish.tntrun.thread;
 
 import cn.nukkit.block.BlockAir;
+import cn.nukkit.math.Vector3;
 import cn.nukkit.scheduler.PluginTask;
 import org.sobadfish.tntrun.TntRunMain;
 import org.sobadfish.tntrun.manager.TotalManager;
@@ -23,8 +24,13 @@ public class ChunkGroundRunnable extends PluginTask<TntRunMain> {
                 if(info.isStart){
                     //TODO 清除方块
                     if(info.getPlayer().isOnGround()) {
-                        info.getPlayer().getLevel().setBlock(info.getPlayer().getLevelBlock(), new BlockAir(), true);
-                        info.getPlayer().getLevel().setBlock(info.getPlayer().getLevelBlock().add(0, -1, 0), new BlockAir(), true);
+                        double x = info.getPlayer().getX();
+                        double y = info.getPlayer().getFloorY();
+                        double z = info.getPlayer().getZ();
+                        info.getPlayer().getLevel().setBlock(new Vector3(Math.ceil(x),y,Math.ceil(z)),new BlockAir());
+                        info.getPlayer().getLevel().setBlock(new Vector3(x,y,z),new BlockAir());
+                        info.getPlayer().getLevel().setBlock(new Vector3(Math.ceil(x),y - 1,Math.ceil(z)),new BlockAir());
+                        info.getPlayer().getLevel().setBlock(new Vector3(x,y - 1,z),new BlockAir());
                     }
 
                 }

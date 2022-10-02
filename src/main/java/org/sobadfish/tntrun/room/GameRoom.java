@@ -628,54 +628,28 @@ public class GameRoom {
                 }
             }
         }else{
-            //TODO 在房间倒计时结束
-            TeamInfo successInfo;
-            if(getRoomConfig().teamConfigs.size() > 1) {
-                ArrayList<TeamInfo> teamInfos = getLiveTeam();
-                if (teamInfos.size() > 0) {
-                    int pl = 0;
-                    double dh = 0;
-                    successInfo = teamInfos.get(0);
 
-                    for (TeamInfo info : teamInfos) {
-                        ArrayList<PlayerInfo> successInfos = info.getLivePlayer();
-                        if (successInfos.size() > pl) {
-                            pl = successInfos.size();
-                            successInfo = info;
-                            dh = info.getAllHealth();
-
-                        }else if(successInfos.size() == pl && pl > 0){
-                            double dh2 = info.getAllHealth();
-                            if(dh2 > dh){
-                                successInfo = info;
-                                dh = dh2;
-                            }
-                        }
-                    }
-                    successInfo.getVictoryPlayers().addAll(successInfo.getTeamPlayers());
-                    gameEnd(successInfo,true);
+            double y = 0;
+            PlayerInfo successPlayerInfo = null;
+            TeamInfo teamInfo = getTeamInfos().get(0);
+            for(PlayerInfo info: teamInfo.getLivePlayer()){
+                if(info.player.getY() > y){
+                    successPlayerInfo = info;
+                    y = info.player.getY();
                 }
-            }else{
-                double h = 0;
-                PlayerInfo successPlayerInfo = null;
-                TeamInfo teamInfo = getTeamInfos().get(0);
-                for(PlayerInfo info: teamInfo.getLivePlayer()){
-                    if(info.player.getHealth() > h){
-                        successPlayerInfo = info;
-                        h = info.player.getHealth();
-                    }
-                }
-                if(successPlayerInfo == null){
-                    successPlayerInfo = teamInfo.getLivePlayer().get(0);
-                }
-                teamInfo.getVictoryPlayers().add(successPlayerInfo);
-                for(PlayerInfo info: teamInfo.getLivePlayer()){
-                    if(!info.equals(successPlayerInfo)){
-                        teamInfo.getDefeatPlayers().add(info);
-                    }
-                }
-                gameEnd(teamInfo,false);
             }
+            if(successPlayerInfo == null){
+                successPlayerInfo = teamInfo.getLivePlayer().get(0);
+            }
+            teamInfo.getVictoryPlayers().add(successPlayerInfo);
+            for(PlayerInfo info: teamInfo.getLivePlayer()){
+                if(!info.equals(successPlayerInfo)){
+                    teamInfo.getDefeatPlayers().add(info);
+                }
+            }
+            gameEnd(teamInfo,false);
+
+
             //TODO 当时间结束的一些逻辑
             type = GameType.END;
             worldInfo.setClose(true);
