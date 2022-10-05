@@ -43,9 +43,10 @@ public class ChunkGroundRunnable extends PluginTask<TntRunMain> {
                         //TODO 清除方块
                         if (info.getPlayer().isOnGround()) {
                             int y = info.getPlayer().getFloorY() - 1;
+
                             Server.getInstance().getScheduler().scheduleDelayedTask(TotalManager.getPlugin()
                                     , new BlockSetRunnable((TntRunMain) TotalManager.getPlugin(),
-                                    info.player.getLevel(),getCollisionBlocks(info.player,y)),35);
+                                    info.player.getLevel(),getAllBlocks(info.player,y)),10);
 
                         }
 
@@ -55,6 +56,21 @@ public class ChunkGroundRunnable extends PluginTask<TntRunMain> {
         }
 
     }
+
+    private List<Block> getAllBlocks(Entity player, int y) {
+        ArrayList<Block> collisionBlocks = new ArrayList<>();
+        List var1 = this.getCollisionBlocks(player, y);
+        for (Object o : var1) {
+            Block var3 = (Block) o;
+            if (var3.collidesWithBB(player.boundingBox, true)) {
+                collisionBlocks.add(var3);
+            }
+
+        }
+
+        return collisionBlocks;
+    }
+
 
     private List<Block> getCollisionBlocks(Entity player, int y){
         List<Block> collisionBlocks = new ArrayList<>();
