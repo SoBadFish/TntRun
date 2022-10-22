@@ -89,7 +89,7 @@ public class ChunkGroundRunnable extends PluginTask<TntRunMain> {
             for(PlayerInfo info: room.getLivePlayers()){
                 if (info.isStart) {
                     Location location = info.getLocation();
-                    int y = location.getLevelBlock().getFloorY() + 1;
+                    int y = location.getLevelBlock().getFloorY();
                     Block block = null;
                     for (int l = 0; l <= SCAN_DEPTH; l++) {
                         block = getBlockUnderPlayer(y, location);
