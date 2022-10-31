@@ -167,11 +167,12 @@ public class PlayerData {
 
         public String roomName = "";
 
-        //击杀数量
-        public int killCount = 0;
+        //存活时长
+        public int liveTime = 0;
 
         //死亡数量
         public int deathCount = 0;
+
         //游戏次数
         public int gameCount = 0;
 
@@ -181,8 +182,6 @@ public class PlayerData {
         //胜利次数
         public int victoryCount = 0;
 
-        //助攻次数
-        public int assist = 0;
 
         @Override
         public boolean equals(Object o) {
@@ -213,12 +212,15 @@ public class PlayerData {
                 case DEATH:
                     c += deathCount;
                     break;
+                case LIVE_TIME:
+                    c += liveTime;
+                    break;
 //                case KILL:
 //                    c += killCount;
 //                    break;
-//                case GAME:
-//                    c += gameCount;
-//                    break;
+                case GAME:
+                    c += gameCount;
+                    break;
 //                case ASSISTS:
 //                    c += assist;
 //                    break;
@@ -246,8 +248,7 @@ public class PlayerData {
     public void setInfo(PlayerInfo info){
         RoomData data = getRoomData(info.getGameRoom().getRoomConfig().name);
         data.deathCount += info.deathCount;
-        data.killCount += info.killCount;
-        data.assist += info.assists;
+        data.liveTime = info.updateTime;
     }
 
     @Override
@@ -259,10 +260,7 @@ public class PlayerData {
     }
 
     public enum DataType{
-//        /**
-//         * 击杀
-//         * */
-//        KILL("击杀"),
+
         /**
          * 死亡
          * */
@@ -275,10 +273,10 @@ public class PlayerData {
          * 失败
          * */
         DEFEAT("失败"),
-//        /**
-//         * 助攻
-//         * */
-//        ASSISTS("助攻"),
+        /**
+         * 存活
+         * */
+        LIVE_TIME("存活"),
 
         /**
          * 游戏次数

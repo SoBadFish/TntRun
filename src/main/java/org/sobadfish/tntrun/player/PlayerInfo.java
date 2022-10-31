@@ -53,10 +53,6 @@ public class PlayerInfo {
 
     public boolean isLeave;
 
-    public int killCount = 0;
-
-    public int damageTime = 0;
-
     public int deathCount = 0;
 
     public int updateTime = 0;
@@ -71,9 +67,6 @@ public class PlayerInfo {
 
     public PlayerEnderChestInventory eInventory;
 
-    //助攻
-    public LinkedHashMap<PlayerInfo,Long> assistsPlayers = new LinkedHashMap<>();
-
     public LinkedHashMap<Integer,Item> armor = new LinkedHashMap<>();
 
     /**
@@ -83,10 +76,6 @@ public class PlayerInfo {
 
     public PlayerInfo(EntityHuman player){
         this.player = player;
-    }
-
-    public LinkedHashMap<PlayerInfo, Long> getAssistsPlayers() {
-        return assistsPlayers;
     }
 
     public int getAssists() {
@@ -105,10 +94,6 @@ public class PlayerInfo {
         return player.getLevel();
     }
 
-    public int getKillCount() {
-        return killCount;
-    }
-
     public Location getLocation(){
         return player.getLocation();
     }
@@ -124,18 +109,6 @@ public class PlayerInfo {
     public Position getPosition(){
         return player.getPosition();
     }
-
-    public void setDamageByInfo(PlayerInfo damageByInfo) {
-        if(damageByInfo != null) {
-
-            this.damageByInfo = damageByInfo;
-            damageTime = 5;
-            assistsPlayers.put(damageByInfo,System.currentTimeMillis());
-            //现身
-            getPlayer().removeEffect(14);
-        }
-    }
-
 
 
 
@@ -169,17 +142,6 @@ public class PlayerInfo {
         getPlayer().getInventory().setHeldItemSlot(0);
     }
 
-    private void addKill(PlayerInfo info){
-
-        info.killCount++;
-        //助攻累计
-        for(PlayerInfo playerInfo: assistsPlayers.keySet()){
-            if(playerInfo.equals(info)){
-                continue;
-            }
-            playerInfo.assists++;
-        }
-    }
 
 
     /**
@@ -656,47 +618,7 @@ public class PlayerInfo {
             }
         }
 
-        //助攻间隔
-        LinkedHashMap<PlayerInfo,Long> ass = new LinkedHashMap<>(assistsPlayers);
-        for(Map.Entry<PlayerInfo,Long> entry: ass.entrySet()){
-            if(System.currentTimeMillis() - entry.getValue() > 3000){
-                assistsPlayers.remove(entry.getKey());
-            }
-        }
-        if(damageTime > 0){
-            damageTime--;
-        }else{
-            damageByInfo = null;
-        }
-        if(damageByInfo != null){
-            sendTip(damageByInfo+"  &a"+damageByInfo.getPlayer().getHealth()+" / "+damageByInfo.getPlayer().getMaxHealth());
-        }
 
-        //死亡倒计时
-        if(playerType == PlayerType.DEATH){
-            if(gameRoom != null){
-                if(gameRoom.roomConfig.reSpawnTime > 0){
-                    if(spawnTime >= gameRoom.roomConfig.reSpawnTime){
-                        sendTitle("&a你复活了",1);
-                        sendSubTitle("");
-                        spawn();
-                        spawnTime = 0;
-                    }else{
-                        if(spawnTime == 0 && !isSendkey){
-                            isSendkey = true;
-                            sendTitle("&c你死了", gameRoom.roomConfig.reSpawnTime);
-                        }
-                        if(gameRoom != null) {
-                            sendSubTitle((gameRoom.roomConfig.reSpawnTime - spawnTime) + " 秒后复活");
-                        }
-                        spawnTime++;
-                    }
-                }else{
-                    playerType = PlayerType.START;
-                }
-
-            }
-        }
 
         //TODO 玩家更新线程
         if(playerType == PlayerType.START){
@@ -789,50 +711,8 @@ public class PlayerInfo {
         deathCount++;
         if(event != null) {
             if (event.getCause() == EntityDamageEvent.DamageCause.VOID) {
-                if(damageByInfo != null){
-                    gameRoom.sendMessage(this + " &e被 &r" + damageByInfo + " 推入虚空。");
-                    addKill(damageByInfo);
-                }
                 gameRoom.sendMessage(this + "&e掉入虚空");
 
-            } else if (event instanceof EntityDamageByEntityEvent) {
-                Entity entity = ((EntityDamageByEntityEvent) event).getDamager();
-                if (entity instanceof Player) {
-                    PlayerInfo info = TotalManager.getRoomManager().getPlayerInfo((Player) entity);
-                    String killInfo = "击杀";
-                    if(event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE){
-                        killInfo = "射杀";
-                    }
-                    if (info != null) {
-                        addKill(info);
-                        gameRoom.sendMessage(this + " &e被 &r" + info + " "+killInfo+"了。");
-                    }
-                } else {
-                    gameRoom.sendMessage(this + " &e被 &r" + entity.getName() + " 击败了");
-                }
-            } else {
-                if(damageByInfo != null){
-                    addKill(damageByInfo);
-                    gameRoom.sendMessage(this + " &e被 &r" + damageByInfo + " 击败了");
-                }else {
-                    String deathInfo = "&e死了";
-                    switch (event.getCause()){
-                        case LAVA:
-                            deathInfo = "&e被岩浆烧死了";
-                            break;
-                        case FALL:
-                            deathInfo = "&e摔死了";
-                            break;
-                        case FIRE:
-                            deathInfo = "&e被烧了";
-                            break;
-                        case HUNGER:
-                            deathInfo = "&e饿死了";
-                            break;
-                        default:break;
-                    }
-                    gameRoom.sendMessage(this +deathInfo);
-                }
             }
         }
 //        playerType = PlayerType.DEATH;
