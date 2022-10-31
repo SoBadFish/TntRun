@@ -5,7 +5,9 @@ import cn.nukkit.block.Block;
 import cn.nukkit.block.BlockAir;
 import cn.nukkit.block.BlockID;
 import cn.nukkit.level.Location;
+import cn.nukkit.level.ParticleEffect;
 import cn.nukkit.level.Position;
+import cn.nukkit.level.particle.DestroyBlockParticle;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.scheduler.PluginTask;
 import org.sobadfish.tntrun.TntRunMain;
@@ -23,7 +25,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class ChunkGroundRunnable extends PluginTask<TntRunMain> {
 
-    private final CopyOnWriteArrayList<Block> blockDestroyable = new CopyOnWriteArrayList<>();
+
 
 
     public ChunkGroundRunnable(TntRunMain tntRunMain) {
@@ -36,11 +38,10 @@ public class ChunkGroundRunnable extends PluginTask<TntRunMain> {
     @Override
     public void onRun(int i) {
         for (GameRoom room : TotalManager.getRoomManager().getRooms().values()) {
-
             if (room.getType() == GameRoom.GameType.START) {
-                Server.getInstance().getScheduler().scheduleTask(TotalManager.getPlugin()
+                Server.getInstance().getScheduler().scheduleDelayedTask(TotalManager.getPlugin()
                         , new BlockSetRunnable((TntRunMain) TotalManager.getPlugin(),
-                                room));
+                                room),1);
             }
         }
     }
@@ -48,11 +49,11 @@ public class ChunkGroundRunnable extends PluginTask<TntRunMain> {
 
     //边缘检测
     private static final double PLAYER_BOUNDINGBOX_ADD = 0.3;
+//
+//    //深度
+//    private static final int SCAN_DEPTH = 1;
 
-    //深度
-    private static final int SCAN_DEPTH = 2;
-
-    private class BlockSetRunnable extends PluginTask<TntRunMain>{
+    private static class BlockSetRunnable extends PluginTask<TntRunMain>{
 
         private final GameRoom room;
 
@@ -63,7 +64,7 @@ public class ChunkGroundRunnable extends PluginTask<TntRunMain> {
 
 
         private Block getBlockUnderPlayer(int y, Location location) {
-            Position loc = new Position(location.getX(), y, location.getZ());
+            Position loc = new Position(location.getX(), y, location.getZ(),location.level);
             Block b11 = loc.add(+PLAYER_BOUNDINGBOX_ADD, -PLAYER_BOUNDINGBOX_ADD).getLevelBlock();
             if (b11.getId() != BlockID.AIR) {
                 return b11;
@@ -80,6 +81,7 @@ public class ChunkGroundRunnable extends PluginTask<TntRunMain> {
             if (b22.getId() != BlockID.AIR) {
                 return b22;
             }
+
             return null;
         }
 
@@ -91,7 +93,7 @@ public class ChunkGroundRunnable extends PluginTask<TntRunMain> {
                     Location location = info.getLocation();
                     int y = location.getLevelBlock().getFloorY();
                     Block block = null;
-                    for (int l = 0; l <= SCAN_DEPTH; l++) {
+                    for (int l = 0; l <= room.getRoomConfig().scanDepth; l++) {
                         block = getBlockUnderPlayer(y, location);
                         y--;
                         if (block != null) {
@@ -99,20 +101,28 @@ public class ChunkGroundRunnable extends PluginTask<TntRunMain> {
                         }
                     }
                     if (block != null) {
-                        final Block fblock = block;
-                        if(!blockDestroyable.contains(fblock)) {
-                            blockDestroyable.add(fblock);
+
+                        if(!room.worldInfo.getBlockDestroyable().contains(block)) {
+                            room.worldInfo.getBlockDestroyable().add(block);
                         }
-                        Server.getInstance().getScheduler().scheduleDelayedTask(TotalManager.getPlugin(), new Runnable() {
-                            @Override
-                            public void run() {
-                                if(room.getType() == GameRoom.GameType.START){
-                                    blockDestroyable.remove(fblock);
-                                    fblock.level.setBlock(fblock,new BlockAir());
-                                }
-                            }
-                        },30);
+                        Server.getInstance().getScheduler().scheduleDelayedTask(TotalManager.getPlugin(), new BlockBreakThread(block),20);
                     }
+                }
+            }
+        }
+
+        private class BlockBreakThread implements Runnable{
+            private final Block block;
+            public BlockBreakThread(Block block) {
+                this.block = block;
+            }
+
+            @Override
+            public void run() {
+                if(room.getType() == GameRoom.GameType.START){
+                    room.worldInfo.getBlockDestroyable().remove(block);
+                    block.level.addParticle(new DestroyBlockParticle(block,block));
+                    block.level.setBlock(block,new BlockAir());
                 }
             }
         }

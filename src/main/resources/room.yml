@@ -19,6 +19,7 @@ roundChest: false
 ban-break: []
 can-break: []
 floatSpawnPos: []
+scan-depth: 1
 
 roomStartMessage:
   - "&a■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■"

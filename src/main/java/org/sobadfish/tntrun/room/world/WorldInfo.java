@@ -8,6 +8,7 @@ import org.sobadfish.tntrun.room.config.WorldInfoConfig;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 地图的实例化方法，当房间启动后，这个方法也随之启动
@@ -17,6 +18,8 @@ import java.util.List;
 public class WorldInfo {
 
     private GameRoom room;
+
+    private CopyOnWriteArrayList<Block> blockDestroyable = new CopyOnWriteArrayList<>();
 
 
     private boolean isClose;
@@ -33,6 +36,10 @@ public class WorldInfo {
         this.config = config;
         this.room = room;
 
+    }
+
+    public CopyOnWriteArrayList<Block> getBlockDestroyable() {
+        return blockDestroyable;
     }
 
     public WorldInfoConfig getConfig() {

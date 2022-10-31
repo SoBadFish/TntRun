@@ -602,12 +602,8 @@ public class PlayerInfo {
             }else{
                 TeamInfo teamInfo = gameRoom.getTeamInfos().get(0);
                 lore.add("   ");
-                lore.add(" 存活人数: &a "+teamInfo.getLivePlayer().size() +" &7/&a "+teamInfo.getTeamPlayers().size());
+                lore.add(" 存活人数: &a "+teamInfo.getLivePlayer().size());
             }
-
-            lore.add("      ");
-            lore.add("&b击杀数: &a"+killCount);
-            lore.add("&e助攻数: &a"+assists);
 
             lore.add("        ");
         }

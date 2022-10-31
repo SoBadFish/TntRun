@@ -90,6 +90,11 @@ public class GameRoomConfig {
     public int callbackY = 17;
 
     /**
+     * TNT深度
+     * */
+    public int scanDepth = 1;
+
+    /**
      * 游戏浮空字
      * */
     public List<FloatTextInfoConfig> floatTextInfoConfigs = new CopyOnWriteArrayList<>();
@@ -130,6 +135,8 @@ public class GameRoomConfig {
      * 除了列表内的方块
      * */
     public ArrayList<String> banBreak = new ArrayList<>();
+
+
 
 
 
@@ -240,7 +247,7 @@ public class GameRoomConfig {
                 roomConfig.deathDrop = room.getBoolean("deathDrop",false);
                 roomConfig.canBreak = new ArrayList<>(room.getStringList("can-break"));
                 roomConfig.banBreak = new ArrayList<>(room.getStringList("ban-break"));
-
+                roomConfig.scanDepth = room.getInt("scan-depth",1);
                 List<FloatTextInfoConfig> configs = new ArrayList<>();
                 if(room.exists("floatSpawnPos")){
                     for(Map<?,?> map: room.getMapList("floatSpawnPos")){
@@ -327,6 +334,7 @@ public class GameRoomConfig {
         config.set("defeatCmd",defeatCommand);
         config.set("deathDrop",deathDrop);
         config.set("victoryCmd",victoryCommand);
+        config.set("scan-depth",scanDepth);
 //        config.set("roundChest",roundChest);
         config.set("roomStartMessage",gameStartMessage);
         List<Map<String,Object>> pos = new ArrayList<>();
