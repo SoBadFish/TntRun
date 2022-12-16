@@ -27,7 +27,6 @@ public class ChunkGroundRunnable extends PluginTask<TntRunMain> {
 
 
 
-
     public ChunkGroundRunnable(TntRunMain tntRunMain) {
         super(tntRunMain);
     }
@@ -105,7 +104,7 @@ public class ChunkGroundRunnable extends PluginTask<TntRunMain> {
                         if(!room.worldInfo.getBlockDestroyable().contains(block)) {
                             room.worldInfo.getBlockDestroyable().add(block);
                         }
-                        Server.getInstance().getScheduler().scheduleDelayedTask(TotalManager.getPlugin(), new BlockBreakThread(block),20);
+                        Server.getInstance().getScheduler().scheduleDelayedTask(TotalManager.getPlugin(), new BlockBreakThread(block),10);
                     }
                 }
             }

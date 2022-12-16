@@ -51,7 +51,6 @@ public class PlayerItem extends BasePlayPanelItemInstance{
         lore.add(TextFormat.colorize('&',"&r "));
         lore.add(TextFormat.colorize('&',"&r&7血量 &a"+this.info.getPlayer().getHealth()+" / "+this.info.getPlayer().getMaxHealth()));
         lore.add(TextFormat.colorize('&',"&r  "));
-        lore.add(TextFormat.colorize('&',"&r&7击杀 &a"+this.info.getKillCount()));
         lore.add(TextFormat.colorize('&',"&r   "));
         String status = "&a存活";
 
