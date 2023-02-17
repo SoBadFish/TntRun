@@ -63,9 +63,9 @@ public class PlayerInfo {
 
     private PlayerInfo damageByInfo = null;
 
-    public PlayerInventory inventory;
+    public Map<Integer, Item> inventory;
 
-    public PlayerEnderChestInventory eInventory;
+    public Map<Integer, Item> eInventory;
 
     public LinkedHashMap<Integer,Item> armor = new LinkedHashMap<>();
 
@@ -125,8 +125,8 @@ public class PlayerInfo {
      * */
     public void init(){
         if(TotalManager.getConfig().getBoolean("save-playerInventory",true)){
-            inventory = getPlayer().getInventory();
-            eInventory = getPlayer().getEnderChestInventory();
+            inventory = getPlayer().getInventory().getContents();
+            eInventory = getPlayer().getEnderChestInventory().getContents();
         }
         getPlayer().setHealth(getPlayer().getMaxHealth());
         if(getPlayer() instanceof Player) {
@@ -462,8 +462,8 @@ public class PlayerInfo {
                 player.setHealth(player.getMaxHealth());
                 ((Player) player).setExperience(0,0);
                 if(inventory != null && eInventory != null){
-                    player.getInventory().setContents(inventory.getContents());
-                    player.getEnderChestInventory().setContents(eInventory.getContents());
+                    player.getInventory().setContents(inventory);
+                    player.getEnderChestInventory().setContents(eInventory);
                 }
                 if(getPlayer() instanceof Player) {
                     ((Player) getPlayer()).setGamemode(0);
