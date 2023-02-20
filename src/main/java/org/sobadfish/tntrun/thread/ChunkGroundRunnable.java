@@ -64,19 +64,19 @@ public class ChunkGroundRunnable extends PluginTask<TntRunMain> {
 
         private Block getBlockUnderPlayer(int y, Location location) {
             Position loc = new Position(location.getX(), y, location.getZ(),location.level);
-            Block b11 = loc.add(+PLAYER_BOUNDINGBOX_ADD, -PLAYER_BOUNDINGBOX_ADD).getLevelBlock();
+            Block b11 = loc.add(+PLAYER_BOUNDINGBOX_ADD,0, -PLAYER_BOUNDINGBOX_ADD).getLevelBlock();
             if (b11.getId() != BlockID.AIR) {
                 return b11;
             }
-            Block b12 = loc.add(-PLAYER_BOUNDINGBOX_ADD, +PLAYER_BOUNDINGBOX_ADD).getLevelBlock();
+            Block b12 = loc.add(-PLAYER_BOUNDINGBOX_ADD,0, +PLAYER_BOUNDINGBOX_ADD).getLevelBlock();
             if (b12.getId() != BlockID.AIR) {
                 return b12;
             }
-            Block b21 = loc.add(+PLAYER_BOUNDINGBOX_ADD, +PLAYER_BOUNDINGBOX_ADD).getLevelBlock();
+            Block b21 = loc.add(+PLAYER_BOUNDINGBOX_ADD,0, +PLAYER_BOUNDINGBOX_ADD).getLevelBlock();
             if (b21.getId() != BlockID.AIR) {
                 return b21;
             }
-            Block b22 = loc.add(-PLAYER_BOUNDINGBOX_ADD, -PLAYER_BOUNDINGBOX_ADD).getLevelBlock();
+            Block b22 = loc.add(-PLAYER_BOUNDINGBOX_ADD,0, -PLAYER_BOUNDINGBOX_ADD).getLevelBlock();
             if (b22.getId() != BlockID.AIR) {
                 return b22;
             }
