@@ -21,7 +21,7 @@ public class GameNpcVariable extends BaseVariableV2 {
 
 
     public static void init() {
-        VariableManage.addVariableV2("skywar", GameNpcVariable.class);
+        VariableManage.addVariableV2("tntrun", GameNpcVariable.class);
     }
 
     @Override
