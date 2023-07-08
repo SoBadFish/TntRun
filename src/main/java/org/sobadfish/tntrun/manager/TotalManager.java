@@ -8,6 +8,8 @@ import org.sobadfish.tntrun.manager.data.PlayerDataManager;
 import org.sobadfish.tntrun.manager.data.PlayerTopManager;
 import org.sobadfish.tntrun.panel.lib.AbstractFakeInventory;
 import org.sobadfish.tntrun.room.config.GameRoomConfig;
+import org.sobadfish.tntrun.variable.GameNpcVariable;
+import org.sobadfish.tntrun.variable.GameTipVariable;
 
 import java.io.File;
 
@@ -55,6 +57,7 @@ public class TotalManager {
         TotalManager.plugin = pluginBase;
         checkServer();
         loadConfig();
+        loadVariable();
         ThreadManager.init();
     }
 
@@ -68,6 +71,17 @@ public class TotalManager {
             return plugin.isDisabled();
         }
         return true;
+    }
+
+    private static void loadVariable() {
+        try{
+            Class.forName("com.smallaswater.npc.variable.BaseVariableV2");
+            GameNpcVariable.init();
+        }catch (Exception ignore){}
+        try{
+            Class.forName("tip.utils.variables.BaseVariable");
+            GameTipVariable.init();
+        }catch (Exception ignore){}
     }
 
     public static PluginBase getPlugin() {
